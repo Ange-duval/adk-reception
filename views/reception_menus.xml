@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_reception_root" name="ADK Réception" sequence="15"
+              web_icon="adk_reception,static/description/icon.png"
+              groups="adk_reception.group_reception_user"/>
+
+    <menuitem id="menu_reception_dashboard" name="Dashboard" parent="menu_reception_root"
+              action="action_reception_dashboard" sequence="1"/>
+
+    <menuitem id="menu_reception_flux" name="Flux Entrées/Sorties" parent="menu_reception_root" sequence="10"/>
+    <menuitem id="menu_reception_visit" name="Visiteurs" parent="menu_reception_flux"
+              action="action_reception_visit" sequence="10"/>
+    <menuitem id="menu_reception_visitor" name="Fiches Visiteurs" parent="menu_reception_flux"
+              action="action_reception_visitor" sequence="20"/>
+    <menuitem id="menu_reception_employee_movement" name="Badgeage Employés" parent="menu_reception_flux"
+              action="action_reception_employee_movement" sequence="30"/>
+
+    <menuitem id="menu_reception_goods_root" name="Biens &amp; Marchandises" parent="menu_reception_root"
+              action="action_reception_goods" sequence="20"/>
+
+    <menuitem id="menu_reception_security" name="Sécurité" parent="menu_reception_root" sequence="30"/>
+    <menuitem id="menu_reception_security_list" name="Liste des Présents (Évacuation)"
+              parent="menu_reception_security" action="action_reception_security_list_wizard" sequence="10"/>
+
+    <menuitem id="menu_reception_reports" name="Rapports" parent="menu_reception_root" sequence="40"/>
+    <menuitem id="menu_reception_export" name="Générateur d'Export" parent="menu_reception_reports"
+              action="action_reception_export_wizard" sequence="10"/>
+
+    <menuitem id="menu_reception_config_root" name="Configuration" parent="menu_reception_root"
+              sequence="50" groups="adk_reception.group_reception_manager"/>
+    <menuitem id="menu_reception_motif" name="Motifs de Visite" parent="menu_reception_config_root"
+              action="action_reception_motif" sequence="10"/>
+    <menuitem id="menu_reception_id_type" name="Types de Pièce d'Identité" parent="menu_reception_config_root"
+              action="action_reception_id_type" sequence="15"/>
+    <menuitem id="menu_reception_material_category" name="Catégories de Matériel" parent="menu_reception_config_root"
+              action="action_reception_material_category" sequence="16"/>
+    <menuitem id="menu_reception_badge_method" name="Méthodes de Badgeage" parent="menu_reception_config_root"
+              action="action_reception_badge_method" sequence="17"/>
+    <menuitem id="menu_reception_goods_type" name="Types de Biens / Marchandises" parent="menu_reception_config_root"
+              action="action_reception_goods_type" sequence="18"/>
+    <menuitem id="menu_reception_settings" name="Paramètres" parent="menu_reception_config_root"
+              action="action_reception_config_settings" sequence="20"/>
+</odoo>

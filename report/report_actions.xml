@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_visit_badge" model="ir.actions.report">
+        <field name="name">Badge Visiteur</field>
+        <field name="model">adk.reception.visit</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">adk_reception.report_visit_badge_document</field>
+        <field name="report_file">adk_reception.report_visit_badge_document</field>
+        <field name="print_report_name">'Badge - %s' % (object.visitor_name)</field>
+        <field name="binding_model_id" ref="model_adk_reception_visit"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_present_list" model="ir.actions.report">
+        <field name="name">Liste des Présents (Sécurité / Évacuation)</field>
+        <field name="model">adk.reception.security.list.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">adk_reception.report_present_list_document</field>
+        <field name="report_file">adk_reception.report_present_list_document</field>
+        <field name="print_report_name">'Liste des presents'</field>
+    </record>
+
+    <record id="action_report_export_document" model="ir.actions.report">
+        <field name="name">Export Historique (PDF)</field>
+        <field name="model">adk.reception.export.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">adk_reception.report_export_document</field>
+        <field name="report_file">adk_reception.report_export_document</field>
+        <field name="print_report_name">'Export ADK Reception - %s au %s' % (object.date_from, object.date_to)</field>
+    </record>
+</odoo>

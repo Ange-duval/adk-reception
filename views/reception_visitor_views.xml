@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_reception_visitor" model="ir.actions.act_window">
+        <field name="name">Fiches Visiteurs</field>
+        <field name="res_model">adk.reception.visitor</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Créez votre première fiche visiteur</p>
+            <p>Les fiches visiteurs permettent de retrouver instantanément un visiteur récurrent
+               sans ressaisir ses informations à chaque passage.</p>
+        </field>
+    </record>
+
+    <record id="view_reception_visitor_list" model="ir.ui.view">
+        <field name="name">adk.reception.visitor.list</field>
+        <field name="model">adk.reception.visitor</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="is_blacklisted">
+                <field name="name"/>
+                <field name="company_name"/>
+                <field name="phone"/>
+                <field name="id_piece_number"/>
+                <field name="visit_count"/>
+                <field name="last_visit_date"/>
+                <field name="is_blacklisted" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_reception_visitor_form" model="ir.ui.view">
+        <field name="name">adk.reception.visitor.form</field>
+        <field name="model">adk.reception.visitor</field>
+        <field name="arch" type="xml">
+            <form string="Fiche Visiteur">
+                <header>
+                    <button name="action_new_visit" string="Nouvelle Visite" type="object"
+                            class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_visits" type="object" class="oe_stat_button" icon="fa-history">
+                            <field name="visit_count" string="Visites" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <field name="photo" widget="adk_webcam" class="oe_avatar"
+                           options="{'preview_image': 'photo'}"/>
+                    <widget name="web_ribbon" title="Accès refusé" bg_color="text-bg-danger"
+                            invisible="not is_blacklisted"/>
+                    <div class="oe_title">
+                        <label for="name" string="Nom complet"/>
+                        <h1><field name="name" placeholder="ex: Jean Dupont"/></h1>
+                    </div>
+                    <group>
+                        <group string="Identité">
+                            <field name="company_name"/>
+                            <field name="id_piece_type" options="{'no_create': False, 'no_open': False}"/>
+                            <field name="id_piece_number"/>
+                        </group>
+                        <group string="Contact">
+                            <field name="phone"/>
+                            <field name="email"/>
+                        </group>
+                    </group>
+                    <group string="Sécurité">
+                        <field name="is_blacklisted"/>
+                        <field name="blacklist_reason" invisible="not is_blacklisted"/>
+                    </group>
+                    <group string="Observations">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_reception_visitor_search" model="ir.ui.view">
+        <field name="name">adk.reception.visitor.search</field>
+        <field name="model">adk.reception.visitor</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="company_name"/>
+                <field name="id_piece_number"/>
+                <filter string="Liste noire" name="blacklisted" domain="[('is_blacklisted', '=', True)]"/>
+                <group expand="0" string="Regrouper par">
+                    <filter string="Entreprise" name="group_company" context="{'group_by': 'company_name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_reception_settings_form" model="ir.ui.view">
+        <field name="name">adk.reception.settings.form</field>
+        <field name="model">adk.reception.settings</field>
+        <field name="arch" type="xml">
+            <form string="Paramètres ADK Réception">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Paramètres ADK Réception</h1>
+                        <p class="text-muted">
+                            Ces valeurs servent de référence pour la détection automatique des
+                            retards et des heures supplémentaires sur le badgeage employés.
+                        </p>
+                    </div>
+                    <group>
+                        <group string="Horaires de référence">
+                            <field name="expected_start_hour" widget="float_time"/>
+                            <field name="expected_end_hour" widget="float_time"/>
+                            <field name="late_tolerance_minutes"/>
+                        </group>
+                        <group string="Notifications">
+                            <field name="notify_host_email"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_save" string="Enregistrer" type="object" class="btn-primary"/>
+                    <button string="Fermer" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_reception_config_settings" model="ir.actions.act_window">
+        <field name="name">Paramètres ADK Réception</field>
+        <field name="res_model">adk.reception.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

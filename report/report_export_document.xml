@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_export_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Historique ADK Réception</h2>
+                        <p>Période du <span t-field="o.date_from"/> au <span t-field="o.date_to"/></p>
+                        <table class="table table-sm table-bordered o_report_table" style="font-size:12px;">
+                            <thead>
+                                <tr style="background-color:#f2f2f2;">
+                                    <th>Type</th>
+                                    <th>Nom</th>
+                                    <th>Détail</th>
+                                    <th>Hôte/Lien</th>
+                                    <th>Entrée</th>
+                                    <th>Sortie</th>
+                                    <th>Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o._collect_rows()" t-as="r">
+                                    <tr>
+                                        <td><t t-esc="r['type']"/></td>
+                                        <td><t t-esc="r['nom']"/></td>
+                                        <td><t t-esc="r['detail']"/></td>
+                                        <td><t t-esc="r['lien']"/></td>
+                                        <td><t t-esc="r['entree']"/></td>
+                                        <td><t t-esc="r['sortie']"/></td>
+                                        <td><t t-esc="r['statut']"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

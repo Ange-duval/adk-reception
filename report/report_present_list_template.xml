@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_present_list_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 class="text-danger">
+                            <span class="fa fa-exclamation-triangle"/>
+                            Liste des personnes présentes sur site
+                        </h2>
+                        <p>
+                            Générée le <span t-field="o.generated_at"/> —
+                            Document à usage de sécurité / évacuation.
+                        </p>
+                        <table class="table table-sm table-bordered o_report_table">
+                            <thead>
+                                <tr style="background-color:#f2f2f2;">
+                                    <th>Type</th>
+                                    <th>Nom</th>
+                                    <th>Détail (hôte / département)</th>
+                                    <th>Présent depuis</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o._get_present_list()" t-as="p">
+                                    <tr>
+                                        <td><t t-esc="p['type']"/></td>
+                                        <td><t t-esc="p['name']"/></td>
+                                        <td><t t-esc="p['detail']"/></td>
+                                        <td><t t-esc="p['since']"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

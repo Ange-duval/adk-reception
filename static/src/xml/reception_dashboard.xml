@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="adk_reception.Dashboard">
+        <div class="adk_dashboard" t-att-class="state.darkMode ? 'adk_dark' : 'adk_light'">
+
+            <!-- ===================== HEADER ===================== -->
+            <div class="adk_header">
+                <div class="adk_header_title">
+                    <i class="fa fa-shield me-2"/>
+                    <span>ADK Réception — Tableau de Bord</span>
+                </div>
+                <div class="adk_header_actions">
+                    <button class="btn btn-sm adk_btn" t-on-click="onManualRefresh" title="Actualiser">
+                        <i class="fa fa-refresh"/>
+                    </button>
+                    <button class="btn btn-sm adk_btn adk_btn_danger" t-on-click="openSecurityList"
+                            title="Liste de sécurité (évacuation)">
+                        <i class="fa fa-exclamation-triangle me-1"/> Sécurité
+                    </button>
+                    <button class="btn btn-sm adk_btn" t-on-click="toggleDarkMode" title="Basculer thème">
+                        <i t-att-class="state.darkMode ? 'fa fa-sun-o' : 'fa fa-moon-o'"/>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ===================== FILTRES ===================== -->
+            <div class="adk_filters">
+                <div class="adk_filter_group">
+                    <t t-foreach="[['today','Aujourd\'hui'],['week','Semaine'],['month','Mois'],['year','Année']]" t-as="p" t-key="p[0]">
+                        <button class="adk_chip" t-att-class="state.period === p[0] ? 'adk_chip_active' : ''"
+                                t-on-click="() => this.onChangePeriod(p[0])" t-esc="p[1]"/>
+                    </t>
+                </div>
+                <div class="adk_filter_group">
+                    <t t-foreach="[['all','Tous'],['visitor','Visiteurs'],['employee','Employés'],['goods','Biens']]" t-as="p" t-key="p[0]">
+                        <button class="adk_chip adk_chip_alt" t-att-class="state.profileType === p[0] ? 'adk_chip_active' : ''"
+                                t-on-click="() => this.onChangeProfileType(p[0])" t-esc="p[1]"/>
+                    </t>
+                </div>
+                <div class="adk_search">
+                    <i class="fa fa-search"/>
+                    <input type="text" placeholder="Rechercher un nom..." t-on-input="onSearchInput"/>
+                </div>
+            </div>
+
+            <!-- ===================== KPIs ===================== -->
+            <div class="adk_kpi_grid">
+                <div class="adk_kpi_card adk_kpi_main" t-on-click="() => this.openKpiTarget('visitors_present')">
+                    <div class="adk_kpi_icon"><i class="fa fa-users"/></div>
+                    <div class="adk_kpi_value" t-esc="state.kpis.total_present_onsite ?? 0"/>
+                    <div class="adk_kpi_label">Présents sur site</div>
+                </div>
+                <div class="adk_kpi_card" t-on-click="() => this.openKpiTarget('visitors_present')">
+                    <div class="adk_kpi_icon"><i class="fa fa-user"/></div>
+                    <div class="adk_kpi_value" t-esc="state.kpis.visitors_present ?? 0"/>
+                    <div class="adk_kpi_label">Visiteurs présents</div>
+                </div>
+                <div class="adk_kpi_card" t-on-click="() => this.openKpiTarget('visitors_expected')">
+                    <div class="adk_kpi_icon"><i class="fa fa-hourglass-half"/></div>
+                    <div class="adk_kpi_value" t-esc="state.kpis.visitors_expected ?? 0"/>
+                    <div class="adk_kpi_label">Visiteurs attendus</div>
+                </div>
+                <div class="adk_kpi_card">
+                    <div class="adk_kpi_icon"><i class="fa fa-sign-out"/></div>
+                    <div class="adk_kpi_value" t-esc="state.kpis.visitors_checked_out ?? 0"/>
+                    <div class="adk_kpi_label">Sorties (période)</div>
+                </div>
+                <div class="adk_kpi_card" t-on-click="() => this.openKpiTarget('employees_present')">
+                    <div class="adk_kpi_icon"><i class="fa fa-id-badge"/></div>
+                    <div class="adk_kpi_value" t-esc="state.kpis.employees_present ?? 0"/>
+                    <div class="adk_kpi_label">Employés présents</div>
+                </div>
+                <div class="adk_kpi_card adk_kpi_warning" t-on-click="() => this.openKpiTarget('employees_late')">
+                    <div class="adk_kpi_icon"><i class="fa fa-clock-o"/></div>
+                    <div class="adk_kpi_value" t-esc="state.kpis.employees_late ?? 0"/>
+                    <div class="adk_kpi_label">Retards</div>
+                </div>
+                <div class="adk_kpi_card adk_kpi_warning" t-on-click="() => this.openKpiTarget('employees_overtime')">
+                    <div class="adk_kpi_icon"><i class="fa fa-hourglass-end"/></div>
+                    <div class="adk_kpi_value" t-esc="state.kpis.employees_overtime ?? 0"/>
+                    <div class="adk_kpi_label">Heures sup.</div>
+                </div>
+                <div class="adk_kpi_card" t-on-click="() => this.openKpiTarget('goods_in_pending')">
+                    <div class="adk_kpi_icon"><i class="fa fa-cube"/></div>
+                    <div class="adk_kpi_value" t-esc="state.kpis.goods_in_pending ?? 0"/>
+                    <div class="adk_kpi_label">Colis en attente</div>
+                </div>
+                <div class="adk_kpi_card adk_kpi_danger" t-on-click="() => this.openKpiTarget('material_alerts')">
+                    <div class="adk_kpi_icon"><i class="fa fa-exclamation-triangle"/></div>
+                    <div class="adk_kpi_value" t-esc="state.kpis.material_alerts ?? 0"/>
+                    <div class="adk_kpi_label">Alertes matériel</div>
+                </div>
+            </div>
+
+            <!-- ===================== FLUX D'ACTIVITÉ (SCROLL INFINI) ===================== -->
+            <div class="adk_feed_section">
+                <div class="adk_feed_title">
+                    <i class="fa fa-list-alt me-2"/>Flux d'activité en temps réel
+                    <span class="adk_feed_count" t-if="state.entries.length">
+                        (<t t-esc="state.entries.length"/> affichées)
+                    </span>
+                </div>
+                <div class="adk_feed_container" t-ref="feedContainer" t-on-scroll="onScrollFeed">
+                    <div t-if="state.loading" class="adk_feed_loading">
+                        <i class="fa fa-spinner fa-spin me-2"/>Chargement...
+                    </div>
+                    <div t-if="!state.loading and !state.entries.length" class="adk_feed_empty">
+                        Aucune activité pour cette période / ce filtre.
+                    </div>
+                    <t t-foreach="state.entries" t-as="entry" t-key="entry.kind + '_' + entry.id">
+                        <div class="adk_feed_item" t-on-click="() => this.openEntry(entry)">
+                            <div class="adk_feed_icon" t-att-class="'adk_icon_' + entry.kind">
+                                <i t-att-class="'fa ' + entry.icon"/>
+                            </div>
+                            <div class="adk_feed_body">
+                                <div class="adk_feed_label" t-esc="entry.label"/>
+                                <div class="adk_feed_sub" t-esc="entry.sub"/>
+                            </div>
+                            <div class="adk_feed_meta">
+                                <span class="adk_feed_state" t-att-class="'adk_state_' + entry.state" t-esc="entry.state_label"/>
+                                <span class="adk_feed_time" t-esc="formatEntryTime(entry.datetime)"/>
+                            </div>
+                        </div>
+                    </t>
+                    <div t-if="state.loadingMore" class="adk_feed_loading">
+                        <i class="fa fa-spinner fa-spin me-2"/>Chargement de plus d'éléments...
+                    </div>
+                    <div t-if="!state.hasMore and state.entries.length" class="adk_feed_end">
+                        — Fin du flux —
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Type de pièce d'identité -->
+    <record id="action_reception_id_type" model="ir.actions.act_window">
+        <field name="name">Types de Pièce d'Identité</field>
+        <field name="res_model">adk.reception.id.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="view_reception_id_type_list" model="ir.ui.view">
+        <field name="name">adk.reception.id.type.list</field>
+        <field name="model">adk.reception.id.type</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Catégorie de matériel -->
+    <record id="action_reception_material_category" model="ir.actions.act_window">
+        <field name="name">Catégories de Matériel</field>
+        <field name="res_model">adk.reception.material.category</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="view_reception_material_category_list" model="ir.ui.view">
+        <field name="name">adk.reception.material.category.list</field>
+        <field name="model">adk.reception.material.category</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="icon"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Méthode de badgeage -->
+    <record id="action_reception_badge_method" model="ir.actions.act_window">
+        <field name="name">Méthodes de Badgeage</field>
+        <field name="res_model">adk.reception.badge.method</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="view_reception_badge_method_list" model="ir.ui.view">
+        <field name="name">adk.reception.badge.method.list</field>
+        <field name="model">adk.reception.badge.method</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Type de bien / marchandise -->
+    <record id="action_reception_goods_type" model="ir.actions.act_window">
+        <field name="name">Types de Biens / Marchandises</field>
+        <field name="res_model">adk.reception.goods.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="view_reception_goods_type_list" model="ir.ui.view">
+        <field name="name">adk.reception.goods.type.list</field>
+        <field name="model">adk.reception.goods.type</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="icon"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+</odoo>

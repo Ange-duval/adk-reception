@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="adk_reception.WebcamImageField">
+        <div class="adk_webcam_field">
+            <t t-call="web.ImageField"/>
+            <div class="mt-2">
+                <button t-if="!webcamState.streaming" type="button" class="btn btn-sm btn-outline-primary"
+                        t-on-click="onOpenWebcam">
+                    <i class="fa fa-camera me-1"/>Prendre une photo (webcam)
+                </button>
+                <div t-else="" class="adk_webcam_capture border rounded p-2 d-inline-block">
+                    <video t-ref="adkWebcamVideo" autoplay="autoplay" playsinline="playsinline"
+                           style="width:220px;height:165px;object-fit:cover;border-radius:6px;background:#000;"/>
+                    <div class="mt-2 d-flex gap-2">
+                        <button type="button" class="btn btn-sm btn-primary" t-on-click="onCapture">
+                            <i class="fa fa-check me-1"/>Capturer
+                        </button>
+                        <button type="button" class="btn btn-sm btn-secondary" t-on-click="onCloseWebcam">
+                            <i class="fa fa-times me-1"/>Annuler
+                        </button>
+                    </div>
+                </div>
+                <canvas t-ref="adkWebcamCanvas" style="display:none;"/>
+                <div t-if="webcamState.error" class="text-danger small mt-1" t-esc="webcamState.error"/>
+            </div>
+        </div>
+    </t>
+</templates>

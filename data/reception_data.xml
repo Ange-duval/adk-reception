@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="motif_rdv" model="adk.reception.motif">
+        <field name="name">Rendez-vous</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="motif_entretien" model="adk.reception.motif">
+        <field name="name">Entretien</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="motif_livraison" model="adk.reception.motif">
+        <field name="name">Livraison</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="motif_maintenance" model="adk.reception.motif">
+        <field name="name">Maintenance / Intervention technique</field>
+        <field name="sequence">40</field>
+    </record>
+    <record id="motif_reunion" model="adk.reception.motif">
+        <field name="name">Réunion</field>
+        <field name="sequence">50</field>
+    </record>
+    <record id="motif_visite_guidee" model="adk.reception.motif">
+        <field name="name">Visite / Audit</field>
+        <field name="sequence">60</field>
+    </record>
+    <record id="motif_autre" model="adk.reception.motif">
+        <field name="name">Autre</field>
+        <field name="sequence">100</field>
+    </record>
+
+    <!-- Types de pièce d'identité -->
+    <record id="id_type_cni" model="adk.reception.id.type">
+        <field name="name">Carte Nationale d'Identité</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="id_type_passeport" model="adk.reception.id.type">
+        <field name="name">Passeport</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="id_type_permis" model="adk.reception.id.type">
+        <field name="name">Permis de conduire</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="id_type_autre" model="adk.reception.id.type">
+        <field name="name">Autre</field>
+        <field name="sequence">100</field>
+    </record>
+
+    <!-- Catégories de matériel -->
+    <record id="material_category_pc" model="adk.reception.material.category">
+        <field name="name">Ordinateur / Matériel informatique</field>
+        <field name="icon">fa-laptop</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="material_category_colis" model="adk.reception.material.category">
+        <field name="name">Colis / Paquet</field>
+        <field name="icon">fa-archive</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="material_category_outil" model="adk.reception.material.category">
+        <field name="name">Outil de travail</field>
+        <field name="icon">fa-wrench</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="material_category_document" model="adk.reception.material.category">
+        <field name="name">Document / Dossier</field>
+        <field name="icon">fa-file-text</field>
+        <field name="sequence">40</field>
+    </record>
+    <record id="material_category_autre" model="adk.reception.material.category">
+        <field name="name">Autre</field>
+        <field name="icon">fa-cube</field>
+        <field name="sequence">100</field>
+    </record>
+
+    <!-- Méthodes de badgeage -->
+    <record id="badge_method_qr" model="adk.reception.badge.method">
+        <field name="name">QR Code</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="badge_method_nfc" model="adk.reception.badge.method">
+        <field name="name">NFC</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="badge_method_matricule" model="adk.reception.badge.method">
+        <field name="name">Matricule</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="badge_method_manual" model="adk.reception.badge.method">
+        <field name="name">Saisie manuelle</field>
+        <field name="sequence">40</field>
+    </record>
+
+    <!-- Types de biens / marchandises -->
+    <record id="goods_type_colis" model="adk.reception.goods.type">
+        <field name="name">Colis / Paquet</field>
+        <field name="icon">fa-archive</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="goods_type_livraison" model="adk.reception.goods.type">
+        <field name="name">Livraison fournisseur</field>
+        <field name="icon">fa-truck</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="goods_type_fourniture" model="adk.reception.goods.type">
+        <field name="name">Fourniture de bureau</field>
+        <field name="icon">fa-briefcase</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="goods_type_equipement" model="adk.reception.goods.type">
+        <field name="name">Équipement entreprise</field>
+        <field name="icon">fa-desktop</field>
+        <field name="sequence">40</field>
+    </record>
+    <record id="goods_type_autre" model="adk.reception.goods.type">
+        <field name="name">Autre</field>
+        <field name="icon">fa-cube</field>
+        <field name="sequence">100</field>
+    </record>
+</odoo>

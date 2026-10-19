@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_reception_visit" model="ir.actions.act_window">
+        <field name="name">Visiteurs (Check-in / Check-out)</field>
+        <field name="res_model">adk.reception.visit</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{'search_default_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Enregistrez votre première visite</p>
+            <p>Check-in / Check-out horodaté à la seconde, avec photo webcam, suivi du matériel
+               et notification automatique de l'hôte.</p>
+        </field>
+    </record>
+
+    <record id="view_reception_visit_kanban" model="ir.ui.view">
+        <field name="name">adk.reception.visit.kanban</field>
+        <field name="model">adk.reception.visit</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" sample="1">
+                <field name="id"/>
+                <field name="visitor_name"/>
+                <field name="visitor_company"/>
+                <field name="photo"/>
+                <field name="host_id"/>
+                <field name="state"/>
+                <field name="check_in_datetime"/>
+                <field name="has_unreturned_material"/>
+                <templates>
+                    <t t-name="card">
+                        <div t-attf-class="oe_kanban_global_click oe_kanban_card">
+                            <div class="o_kanban_record_top d-flex align-items-center">
+                                <img t-att-src="'/web/image/adk.reception.visit/' + record.id.raw_value + '/photo/96x96'"
+                                     class="rounded-circle me-2"
+                                     style="width:44px;height:44px;object-fit:cover;flex-shrink:0;"
+                                     alt="Photo"/>
+                                <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title"><field name="visitor_name"/></strong>
+                                    <div class="text-muted small"><field name="visitor_company"/></div>
+                                    <div class="small">Hôte : <field name="host_id"/></div>
+                                    <span t-if="record.has_unreturned_material.raw_value"
+                                          class="badge text-bg-warning">
+                                        <i class="fa fa-exclamation-triangle"/> Matériel non confirmé
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_reception_visit_list" model="ir.ui.view">
+        <field name="name">adk.reception.visit.list</field>
+        <field name="model">adk.reception.visit</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'checked_in'" decoration-muted="state == 'checked_out'"
+                  decoration-danger="state == 'cancelled'">
+                <field name="name"/>
+                <field name="visitor_name"/>
+                <field name="visitor_company"/>
+                <field name="host_id"/>
+                <field name="motif_id"/>
+                <field name="check_in_datetime"/>
+                <field name="check_out_datetime"/>
+                <field name="duration" widget="float_time"/>
+                <field name="state" widget="badge" decoration-success="state == 'checked_in'"
+                       decoration-muted="state == 'checked_out'"/>
+                <button name="action_check_in" string="Check-in" type="object" icon="fa-sign-in"
+                        invisible="state != 'draft'"/>
+                <button name="action_check_out" string="Check-out" type="object" icon="fa-sign-out"
+                        invisible="state != 'checked_in'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_reception_visit_form" model="ir.ui.view">
+        <field name="name">adk.reception.visit.form</field>
+        <field name="model">adk.reception.visit</field>
+        <field name="arch" type="xml">
+            <form string="Visite">
+                <header>
+                    <button name="action_check_in" string="✅ Check-in (Enregistrer l'entrée)" type="object"
+                            class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_check_out" string="🚪 Check-out (Enregistrer la sortie)" type="object"
+                            class="oe_highlight" invisible="state != 'checked_in'"/>
+                    <button name="action_cancel" string="Annuler" type="object"
+                            invisible="state in ('checked_out', 'cancelled')"/>
+                    <button name="action_reset_draft" string="Réinitialiser" type="object"
+                            invisible="state == 'draft'" groups="adk_reception.group_reception_manager"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,checked_in,checked_out"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_create_or_link_visitor" type="object" class="oe_stat_button"
+                                icon="fa-address-card-o" invisible="visitor_id != False">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Créer fiche</span>
+                                <span class="o_stat_text">visiteur</span>
+                            </div>
+                        </button>
+                        <button name="%(action_report_visit_badge)d" type="action" class="oe_stat_button"
+                                icon="fa-id-card-o">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Imprimer</span>
+                                <span class="o_stat_text">Badge</span>
+                            </div>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Accès refusé" bg_color="text-bg-danger"
+                            invisible="not is_blacklisted"/>
+                    <div class="alert alert-warning" role="alert" invisible="not has_unreturned_material">
+                        <i class="fa fa-exclamation-triangle"/>
+                        Du matériel déclaré à l'entrée n'a pas encore été confirmé comme restitué.
+                    </div>
+                    <div class="oe_title">
+                        <label for="visitor_name" string="Nom du visiteur"/>
+                        <h1><field name="visitor_name" placeholder="ex: Jean Dupont"/></h1>
+                    </div>
+                    <group>
+                        <group string="Identité">
+                            <field name="visitor_id" options="{'no_create': False}"/>
+                            <field name="visitor_company"/>
+                            <field name="id_piece_type" options="{'no_create': False, 'no_open': False}"/>
+                            <field name="id_piece_number"/>
+                            <field name="photo" widget="adk_webcam"/>
+                        </group>
+                        <group string="Visite">
+                            <field name="motif_id" options="{'no_create': False}"/>
+                            <field name="motif_detail"/>
+                            <field name="host_id" options="{'no_create': False, 'no_open': False}"/>
+                            <field name="expected_datetime"/>
+                            <field name="badge_number"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group string="Horodatage">
+                        <group>
+                            <field name="check_in_datetime"/>
+                            <field name="check_out_datetime"/>
+                        </group>
+                        <group>
+                            <field name="duration" widget="float_time" readonly="1"/>
+                            <field name="host_notified" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Matériel déclaré" name="material">
+                            <field name="material_ids">
+                                <list editable="bottom">
+                                    <field name="description"/>
+                                    <field name="category" options="{'no_create': False, 'no_open': False}"/>
+                                    <field name="quantity"/>
+                                    <field name="direction"/>
+                                    <field name="returned" widget="boolean_toggle"/>
+                                    <field name="notes"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_reception_visit_search" model="ir.ui.view">
+        <field name="name">adk.reception.visit.search</field>
+        <field name="model">adk.reception.visit</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="visitor_name"/>
+                <field name="visitor_company"/>
+                <field name="host_id"/>
+                <field name="motif_id"/>
+                <field name="id_piece_number"/>
+                <filter string="Aujourd'hui" name="today"
+                        domain="[('check_in_datetime', '&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+                <filter string="Cette semaine" name="this_week"
+                        domain="[('check_in_datetime', '&gt;=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                <filter string="Ce mois" name="this_month"
+                        domain="[('check_in_datetime', '&gt;=', context_today().strftime('%Y-%m-01'))]"/>
+                <separator/>
+                <filter string="Présents" name="present" domain="[('state', '=', 'checked_in')]"/>
+                <filter string="Attendus" name="expected" domain="[('state', '=', 'draft')]"/>
+                <filter string="Sortis" name="left" domain="[('state', '=', 'checked_out')]"/>
+                <separator/>
+                <filter string="Matériel non restitué" name="material_alert"
+                        domain="[('has_unreturned_material', '=', True)]"/>
+                <group expand="0" string="Regrouper par">
+                    <filter string="Statut" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Hôte" name="group_host" context="{'group_by': 'host_id'}"/>
+                    <filter string="Motif" name="group_motif" context="{'group_by': 'motif_id'}"/>
+                    <filter string="Date d'entrée" name="group_date" context="{'group_by': 'check_in_datetime:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>
